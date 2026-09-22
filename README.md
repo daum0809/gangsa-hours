@@ -4,9 +4,9 @@
 
 > 학원 강사 11명의 근무시간을 카톡으로 받아 엑셀에 옮겨 적던 월말 30분을, 링크 하나로 바꾼 기록.
 
-**공개 상태: 배포 확인 전 — 현재 데모 링크를 사용할 수 없습니다.**
+**새 AI 프로젝트 블로그:** [하루질문 OS 개발 기록](http://yonsei-academy.kr/gangsa-hours/boss-ai/) — 2026-09-22 배포 및 접속 확인.
 
-[GitHub Pages 설정](https://github.com/daum0809/gangsa-hours/settings/pages)에서 Source를 GitHub Actions로 설정한 뒤 배포 성공 여부를 확인해야 합니다.
+[사장 AI PoC 실행 안내](boss-ai/README.md) · [기존 강사료 앱](http://yonsei-academy.kr/gangsa-hours/app.html)
 
 
 

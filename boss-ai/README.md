@@ -4,6 +4,12 @@
 
 노션에 정리된 사용자 고유의 하루질문 OS 구상을 기준으로 구현했습니다. 매출 고민을 첫 실험 범위로 삼습니다. [기획 반영 내역](DESIGN_NOTES.md)을 참고하세요.
 
+**개발 블로그:** [하루질문 OS 개발 기록](http://yonsei-academy.kr/gangsa-hours/boss-ai/)
+
+**가상 사례 데모:** [체험 화면](http://yonsei-academy.kr/gangsa-hours/boss-ai/demo.html) — 모델 실호출이 아닌 사전 작성 예시입니다.
+
+2026-09-22 GitHub Pages 배포 성공 및 블로그 HTTP 200 응답을 확인했습니다.
+
 ## 현재 상태
 - 공개 웹: 블로그와 사전 작성 가상 사례 3종. 실제 AI 추론이 아님.
 - 실제 AI 코드: `server.py`에서 OpenAI Responses API를 호출함. 키는 환경변수로만 읽음.
