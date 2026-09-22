@@ -2,9 +2,11 @@
 
 > 학원 강사 11명의 근무시간을 카톡으로 받아 엑셀에 옮겨 적던 월말 30분을, 링크 하나로 바꾼 기록.
 
-**데모 주소 → https://daum0809.github.io/gangsa-hours/**
+**공개 상태: 배포 확인 전 — 현재 데모 링크를 사용할 수 없습니다.**
 
-*(저장소 이름을 다르게 만드셨다면 위 주소의 `gangsa-hours` 부분만 바꾸면 됩니다.)*
+[GitHub Pages 설정](https://github.com/daum0809/gangsa-hours/settings/pages)에서 Source를 GitHub Actions로 설정한 뒤 배포 성공 여부를 확인해야 합니다.
+
+
 
 ---
 
