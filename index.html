@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>학원 운영 자동화 기록</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+<style>
+:root{--ink:#182235;--muted:#687080;--line:#e3e7ed;--accent:#244b7a;--paper:#fbfaf7}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:system-ui,-apple-system,"Apple SD Gothic Neo",sans-serif;line-height:1.75}main{max-width:780px;margin:auto;padding:48px 24px 80px}h1{font-size:clamp(30px,6vw,48px);line-height:1.2;margin:0 0 16px}h2{margin-top:52px;border-top:1px solid var(--line);padding-top:28px}h3{margin-top:30px}p,li{font-size:17px}blockquote{margin:24px 0;padding:12px 20px;border-left:4px solid var(--accent);background:#fff}a{color:var(--accent);font-weight:700}code{background:#eef1f5;padding:2px 5px;border-radius:5px}pre{overflow:auto;background:#172235;color:#f4f6f8;padding:18px;border-radius:12px}pre code{background:none;padding:0}.hero{margin:-48px -24px 40px;padding:56px 24px 44px;background:#1f3556;color:white}.hero-inner{max-width:780px;margin:auto}.eyebrow{font-size:14px;letter-spacing:.08em;color:#e9b949}.cta{display:inline-block;margin-top:14px;padding:12px 18px;border-radius:10px;background:#e9b949;color:#241c05;text-decoration:none}table{border-collapse:collapse;width:100%}th,td{border:1px solid var(--line);padding:10px;text-align:left}@media(max-width:560px){main{padding-top:32px}.hero{margin-top:-32px}p,li{font-size:16px}}
+</style></head>
+<body><main><section class="hero"><div class="hero-inner"><div class="eyebrow">학습코칭연구소 연세학원 · 운영 자동화 기록</div><h1>강사료 계산을 자동화하다가 배운 것들</h1><p>카톡 11개와 엑셀 사이의 반복 업무를 링크 하나로 바꾼 기록입니다.</p><a class="cta" href="app.html">강사 근무시간 앱 체험하기 →</a></div></section>
+<header id="title-block-header">
+<h1 class="title">학원 운영 자동화 기록</h1>
+</header>
+<h1 id="강사료-계산을-자동화하다가-배운-것들">강사료 계산을 자동화하다가
+배운 것들</h1>
+<blockquote>
+<p>학원 강사 11명의 근무시간을 카톡으로 받아 엑셀에 옮겨 적던 월말
+30분을, 링크 하나로 바꾼 기록.</p>
+</blockquote>
+<p><strong>데모 주소 → <a
+href="app.html">app.html</a></strong></p>
+<p><em>(저장소 이름을 다르게 만드셨다면 위 주소의
+<code>gangsa-hours</code> 부분만 바꾸면 됩니다.)</em></p>
+<hr />
+<h2 id="1-실패한-것부터">1. 실패한 것부터</h2>
+<p>처음 만든 건 이게 아니었습니다. 자영업 사장님을 위한 '문구 생성
+앱'이었습니다. 리뷰 악평에 답글을 달아주고, 홍보 문구를 세 가지 말투로
+뽑아주고, 광고법 위험 표현까지 걸러주는 물건이었습니다. 기술적으로는
+그럴듯했습니다.</p>
+<p>써보고 접었습니다. <strong>원장이 직접 쓰는 게 더 빨랐기
+때문입니다.</strong></p>
+<p>여기서 얻은 기준이 이 프로젝트의 출발점입니다. 자동화가 값이 나오려면
+셋 중 하나는 있어야 합니다.</p>
+<ul>
+<li>반복이 많다 — 같은 걸 매주 30번</li>
+<li>빠뜨리면 손해다 — 잊으면 돈이나 사람이 나간다</li>
+<li>흩어진 걸 모아야 한다 — 사람이 하면 30분</li>
+</ul>
+<p>문구 쓰기는 셋 다 아니었습니다. <strong>강사료 계산은 셋
+다였습니다.</strong> 매달 반복되고, 틀리면 강사와 분쟁이고, 카톡 11개에
+흩어진 숫자를 모아야 합니다.</p>
+<hr />
+<h2 id="2-병목은-계산이-아니라-옮겨-적기였다">2. 병목은 계산이 아니라
+옮겨 적기였다</h2>
+<p>처음엔 "강사료 계산기"를 만들려 했습니다. 그런데 실제로 시간을
+잡아먹는 건 계산이 아니었습니다.</p>
+<blockquote>
+<p>월말에 선생님들이 카톡으로 근무시간을 보냅니다. 그걸 하나씩 읽어서
+엑셀에 옮겨 칩니다.</p>
+</blockquote>
+<p>계산은 수식이 1초면 합니다. <strong>30분은 옮겨 적는 데
+쓰입니다.</strong> 그러면 답은 하나입니다. 옮겨 적는 단계를 없애면
+됩니다. 강사가 직접 넣게 하면 됩니다.</p>
+<p>그래서 이 프로그램의 형태가 '엑셀 파일'에서 '링크'로
+바뀌었습니다.</p>
+<hr />
+<h2 id="3-핵심-기술">3. 핵심 기술</h2>
+<h3 id="3-1-주-단위-재집계--주휴수당">3-1. 주 단위 재집계 —
+주휴수당</h3>
+<p>가장 까다로웠던 부분입니다. 근무시간은 <strong>날짜별</strong>로
+쌓이는데, 주휴수당은 <strong>주 단위</strong>로 판단합니다. 월 총합만
+가지고는 절대 계산할 수 없습니다.</p>
+<p>그래서 월 데이터를 월~일 경계로 다시 자른 뒤, 주마다 따로
+판정합니다.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode js"><code class="sourceCode javascript"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">weeksOf</span>(m){</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> n <span class="op">=</span> <span class="fu">daysIn</span>(m)<span class="op">,</span> out <span class="op">=</span> []<span class="op">;</span> <span class="kw">let</span> cur <span class="op">=</span> []<span class="op">;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (<span class="kw">let</span> d <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> d <span class="op">&lt;=</span> n<span class="op">;</span> d<span class="op">++</span>){</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    cur<span class="op">.</span><span class="fu">push</span>(d)<span class="op">;</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">dowOf</span>(m<span class="op">,</span> d) <span class="op">===</span> <span class="dv">0</span> <span class="op">||</span> d <span class="op">===</span> n){ out<span class="op">.</span><span class="fu">push</span>(cur)<span class="op">;</span> cur <span class="op">=</span> []<span class="op">;</span> }</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> out<span class="op">;</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>판정식은 이렇습니다. 그 주 근무시간이 15시간 이상이면,</p>
+<pre><code>주휴수당 = min(주 근무시간 ÷ 40 × 8, 8시간) × 시급</code></pre>
+<p>40시간을 넘겨도 8시간이 상한입니다. 월 40시간을 일한 강사라도
+<strong>한 주에 몰아서 했는지 4주에 나눠서 했는지에 따라 지급액이
+달라집니다.</strong> 이게 주 단위로 다시 자르는 이유입니다.</p>
+<h3 id="3-2-역할에-따라-다른-화면">3-2. 역할에 따라 다른 화면</h3>
+<p>같은 링크 하나인데 두 화면이 나옵니다.</p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th>강사 화면</th>
+<th>원장 화면</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>들어가는 법</td>
+<td>이름 + 전화 뒷 4자리</td>
+<td>비밀번호 4자리</td>
+</tr>
+<tr class="even">
+<td>보이는 것</td>
+<td>날짜 칸, 본인 합계 시간</td>
+<td>11명 전체, 금액, 주휴수당</td>
+</tr>
+<tr class="odd">
+<td>안 보이는 것</td>
+<td>금액, 주휴수당, 남의 기록</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p>단가와 주휴수당을 강사가 못 보게 한 건 의도적입니다. 강사끼리 시급이
+다른 걸 알게 되는 순간 다른 문제가 시작되기 때문입니다.</p>
+<p>다만 솔직히 적어둡니다. <strong>이건 화면에서 가리는 수준이지
+암호학적 보안이 아닙니다.</strong> 브라우저를 파고들면 못 막습니다.
+민감한 정보를 더 넣을 자리는 아닙니다.</p>
+<h3 id="3-3-33-원천징수-절사">3-3. 3.3% 원천징수 절사</h3>
+<p>사업소득 원천징수는 소득세 3%, 지방소득세 0.3%이고 <strong>각각 10원
+미만을 버립니다.</strong> 합쳐서 3.3%를 한 번에 곱하면 1원 단위가
+틀어집니다.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode js"><code class="sourceCode javascript"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> inc <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">floor</span>(gross <span class="op">*</span> <span class="fl">0.03</span>  <span class="op">/</span> <span class="dv">10</span>) <span class="op">*</span> <span class="dv">10</span><span class="op">;</span>  <span class="co">// 소득세</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> loc <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">floor</span>(gross <span class="op">*</span> <span class="fl">0.003</span> <span class="op">/</span> <span class="dv">10</span>) <span class="op">*</span> <span class="dv">10</span><span class="op">;</span>  <span class="co">// 지방소득세</span></span></code></pre></div>
+<h3 id="3-4-디바운스-자동-저장">3-4. 디바운스 자동 저장</h3>
+<p>'저장' 버튼을 없앴습니다. 강사가 숫자를 찍을 때마다 0.7초 뒤에
+저장됩니다. 화면은 먼저 바뀌고 저장은 뒤따라갑니다.</p>
+<p>말일에 몰아 넣으면 대부분 기억에 의존해 씁니다. <strong>수업 끝나고
+그날 바로 찍게 만드는 것</strong>이 정확도를 올리는 유일한 방법이고,
+저장 버튼은 그 흐름을 끊습니다.</p>
+<h3 id="3-5-데이터-구조">3-5. 데이터 구조</h3>
+<pre><code>roster/&lt;강사id&gt;              이름, 뒷4자리, 구분, 단가, 주휴 대상 여부
+hours/&lt;YYYY-MM&gt;__&lt;강사id&gt;    { days: { 1: 3, 2: 2.5, ... } }
+config/admin                 원장 비밀번호</code></pre>
+<p>월과 강사를 문서 ID에 함께 넣어, 월별 조회가 한 번에 끝나게
+했습니다.</p>
+<hr />
+<h2 id="4-만들고-나서-알게-된-것">4. 만들고 나서 알게 된 것</h2>
+<p><strong>주휴수당을 사람에 붙이면 안 됩니다.</strong> 처음엔 특정 강사
+두 명을 대상으로 지정했습니다. 그런데 주휴수당은 사람이 아니라
+<strong>조건(주 15시간)에 붙는 권리</strong>입니다. 조건을 채운 다른
+강사에게 안 주면 그게 체불입니다. 지금 코드는 지정 방식이지만, 조건 자동
+판정으로 바꾸는 게 맞습니다.</p>
+<p><strong>3.3%로 처리한다고 사업소득이 되는 건 아닙니다.</strong>
+출퇴근 시간이 정해져 있고 원장 지시를 받으면 실질은 근로자로 판단될 수
+있습니다. 세금 처리 방식이 신분을 정하지 않습니다.</p>
+<p><strong>받은 카톡 원문은 남겨야 합니다.</strong> 강사료 분쟁은 대부분
+"저는 4시간이라고 보냈는데요"에서 시작합니다. 직접 입력 방식으로 바꾸면
+이 문제 자체가 사라집니다. 입력한 사람이 본인이니까요.</p>
+<hr />
+<h2 id="5-실행">5. 실행</h2>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/daum0809/gangsa-hours.git</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> gangsa-hours</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="ex">open</span> index.html</span></code></pre></div>
+<p>의존성 없습니다. HTML 파일 하나입니다. 브라우저에서 바로
+열립니다.</p>
+<h3 id="써보기">써보기</h3>
+<ol type="1">
+<li>아래 <strong>"원장님이신가요?"</strong> → 비밀번호 4자리를 정합니다
+(처음 넣은 번호가 등록됩니다)</li>
+<li><strong>강사 명단</strong>에서 이름, 전화 뒷 4자리, 구분, 단가를
+실제 값으로 바꿉니다</li>
+<li>나가서 강사 이름 + 뒷 4자리로 들어가 날짜 칸에 시간을 찍습니다</li>
+<li>다시 원장 화면에서 계산 결과와 주휴수당 내역을 확인하고 CSV로
+내려받습니다</li>
+</ol>
+<blockquote>
+<p><strong>PoC 안내</strong> — 이 공개 버전은 서버 없이 도는 데모라
+입력이 <strong>브라우저 안에만</strong> 저장됩니다. 강사 여러 명이 각자
+폰에서 입력하고 원장이 한곳에서 보려면 공유 저장소가 필요합니다. 실제
+운영본은 그 부분만 다르고 계산식과 화면은 같습니다.</p>
+</blockquote>
+<hr />
+<h2 id="6-구성">6. 구성</h2>
+<pre><code>gangsa-hours/
+├── index.html    전체 (HTML + CSS + JS, 외부 의존성 없음)
+└── README.md</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th>구분</th>
+<th>인원</th>
+<th>계산</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>고정급</td>
+<td>4명</td>
+<td>월 정액 ± 조정</td>
+</tr>
+<tr class="even">
+<td>시급</td>
+<td>7명</td>
+<td>시간 × 시급</td>
+</tr>
+<tr class="odd">
+<td>시급 + 주휴</td>
+<td>위 7명 중 2명</td>
+<td>시간 × 시급 + 주 단위 주휴수당</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p><em>학습코칭연구소 연세학원 운영 자동화 기록 · 2026</em></p>
+</main></body>
+</html>
