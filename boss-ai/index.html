@@ -1,6 +1,97 @@
-<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="사장의 매출 고민을 질문과 검증 가능한 행동으로 바꾸는 AI PoC 개발 기록"><title>사장 문제해결 AI — 개발 기록</title><style>*{box-sizing:border-box}body{margin:0;background:#f4f3ed;color:#203c3d;font:17px/1.85 system-ui,sans-serif}nav{max-width:1060px;margin:auto;padding:20px 24px;display:flex;justify-content:space-between;font-size:14px}a{color:#145d58}header{background:#143c3e;color:#f8f6ef;padding:70px 24px}header>div,main{max-width:920px;margin:auto}.eyebrow{color:#e8ba62;font-size:14px;letter-spacing:.12em}h1{font-size:clamp(34px,6vw,58px);line-height:1.2;letter-spacing:-.05em;max-width:780px}header p{max-width:640px;color:#d2dfdb}.cta{display:inline-block;background:#e8ba62;color:#183a3b;text-decoration:none;border-radius:10px;padding:13px 22px;font-weight:700}main{padding:32px 24px 80px}.notice{background:#fff4d5;border-left:4px solid #c79334;padding:16px 20px;font-size:15px}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:30px 0}.card{background:white;border:1px solid #dce3dd;padding:22px;border-radius:14px}.card strong{display:block;font-size:22px}h2{font-size:28px;letter-spacing:-.03em;margin-top:50px}h3{font-size:21px}.scroll{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:15px}td,th{border-bottom:1px solid #cbd6cf;padding:14px 10px;text-align:left;vertical-align:top}th{background:#e4ebe5}code{background:#e3e9e3;border-radius:5px;padding:2px 5px}.tags{font-size:14px;color:#657a76}footer{border-top:1px solid #ccc;margin-top:50px;padding-top:20px;font-size:14px}@media(max-width:640px){.grid{grid-template-columns:1fr}header{padding-top:40px}table{min-width:560px}}</style></head><body><nav><strong>하루질문 OS / 개발 기록</strong><a href="README.md">실행 안내</a></nav><header><div><span class="eyebrow">PROOF OF CONCEPT · 01</span><h1>“매출이 줄었어요.”<br>답보다 먼저,<br>좋은 질문이 필요합니다.</h1><p>막연한 경영 고민을 구체적인 문제로 바꾸고, 오늘 30분 이내 첫 행동 하나를 정하고 저녁에 돌아보는 질문 보조 도구.</p><a class="cta" href="demo.html">가상 사례로 흐름 체험하기 →</a></div></header><main><div class="notice"><strong>개발 상태:</strong> 체험 화면·실제 API 호출 코드·비교 실험 스크립트 작성. API 키 미설정으로 <strong>실제 모델 호출과 개선 효과는 미검증</strong>입니다. 공개 체험은 사전 작성 사례이며 모델 성능 증거가 아닙니다.</div><div class="grid"><div class="card"><span class="tags">INPUT</span><strong>사장의 고민</strong>자유 서술과 현재 알고 있는 정보</div><div class="card"><span class="tags">PROCESS</span><strong>질문으로 좁히기</strong>최대 3개의 확인 질문과 답변</div><div class="card"><span class="tags">OUTPUT</span><strong>오늘 첫 30분</strong>사실·가설·한계와 검증할 과제</div></div>
-<h2>01. 어떤 문제를 풀 것인가</h2><p>사장이 “매출이 줄었다”고 말할 때 필요한 것은 조언의 양보다 원인을 구분할 정보입니다. 방문객이 줄었는지, 문의가 계약으로 이어지지 않는지, 재구매가 줄었는지에 따라 다음 행동은 달라집니다.</p><p>노션 원안의 핵심은 체크인 → 언어화 → 우선순위 하나 → 최소 행동 → 회고입니다. 첫 대상은 소규모 서비스업 대표입니다. PoC는 <strong>매출 하락 진단</strong>에 집중하며 사업 전체를 자율 운영하거나 원인을 확정하지 않습니다.</p><p><a href="DESIGN_NOTES.md">노션 기획을 어떻게 반영했는지 보기 →</a></p><h2>02. 모델을 어디에 사용할까</h2><p>자유로운 한국어 고민을 해석하고 판별 질문을 만드는 역할에 언어모델을 사용합니다. 초기 후보는 <strong>GPT-4.1 mini</strong>입니다. 구조화 출력 지원을 활용해 결과 항목을 일정하게 만들되, 내용의 정확성은 별도로 검증합니다.</p><p>사용 기법은 단계별 프롬프트와 JSON Schema입니다. 아직 파인튜닝·RAG는 사용하지 않습니다. 노션에 정리된 하루질문 OS의 5단계를 화면과 프롬프트에 반영했습니다. 질문집 원문을 검색하는 기능은 없습니다. <a href="https://developers.openai.com/api/docs/models/gpt-4.1-mini">모델 문서</a> · <a href="https://developers.openai.com/api/docs/guides/structured-outputs">구조화 출력 문서</a></p>
-<h2>03. 사장 앱은 어떻게 작동하나</h2><ol><li><strong>체크인:</strong> 마음과 강도, 지금 가장 무거운 고민을 적습니다.</li><li><strong>언어화:</strong> 사실과 해석을 구분할 질문을 최대 3개 받습니다.</li><li><strong>압축:</strong> 답변을 바탕으로 오늘 집중할 문제 하나를 고릅니다.</li><li><strong>최소 행동:</strong> 시작 시간과 완료 기준이 있는 30분 이내 행동 하나를 제안합니다.</li><li><strong>저녁 회고:</strong> 실행 여부와 장애물을 기록하고 다음 체크인으로 옮기거나 JSON으로 저장합니다.</li></ol><p>공개 페이지는 가상 사례 3종을 보여줍니다. 실제 AI 모드는 Python 로컬 서버에 API 키를 설정한 뒤 실행합니다. 키를 공개 웹페이지에 넣지 않으며 서버는 로컬 접속만 허용합니다.</p>
-<h2>04. 평가 문항과 증거</h2><div class="scroll"><table><thead><tr><th>평가 문항</th><th>만든 증거</th><th>현재 상태</th></tr></thead><tbody><tr><td>1. 문제 정의</td><td>사용자·문제·개선 가설·성공 목표</td><td>작성</td></tr><tr><td>2. 모델 선정</td><td>모델 후보와 단계별 프롬프트 선정 이유</td><td>작성 / 우수성 미검증</td></tr><tr><td>3. AI PoC</td><td>입력→질문→API 진단→실행기록 코드</td><td>구현 / 실호출 미검증</td></tr><tr><td>4. 효과 검증</td><td>가상 6사례, 일반 프롬프트 비교 스크립트</td><td>준비 / 성과 미측정</td></tr><tr><td>5. 한계·추가 시도</td><td>가상 체험, 입력 검증, 결과 내보내기, 다음 계획</td><td>작성·구현</td></tr></tbody></table></div>
-<h2>05. 잘 만들었다는 주장은 어떻게 검증할까</h2><p>같은 모델·같은 정보로 일반 프롬프트와 구조화 진단을 비교합니다. 원인 단정, 근거 없는 숫자, 실행 과제의 구체성, 시간·예산 제약 반영을 사람이 평가합니다. 질문 생성 품질은 별도로 평가해 추가 정보의 효과를 혼동하지 않습니다.</p><div class="card"><strong>목표이며, 아직 결과가 아닙니다.</strong><ul><li>10점 품질 평가에서 일반 프롬프트 대비 평균 2점 개선</li><li>근거 없는 수치 생성 0건</li><li>응답 형식 성공률 95% 이상</li><li>사용성 시험에서 5분 이내 행동 계획 1개 작성</li></ul><p>6건의 가상 사례만으로 일반화할 수 없습니다. 실제 매출 개선은 별도의 장기 검증 대상입니다.</p></div>
-<h2>06. 확인한 것과 남은 것</h2><p>실제 API 호출 없는 기능 테스트 6개를 통과했습니다. 입력 길이 제한, 키 미설정 오류, 질문 단계 행동 출력 방지, 응답 형식 검사, 예시 표시를 확인했습니다. 이 테스트는 AI 추론 품질이나 응답 정확도를 측정하지 않습니다.</p><p>다음 순서는 API 키 설정 후 실호출 → 비교 평가 → 대표 사용자 사용성 시험입니다. 현재 회고는 같은 화면에서 다음 체크인으로 옮길 수 있습니다. 재접속 자동 복원은 이후 과제입니다. 사람이 제공한 기록만으로 원인을 확정하지 않는 원칙을 유지합니다.</p><p><a class="cta" href="demo.html">PoC 체험하기 →</a></p><footer>사장 문제해결 AI · v0.3 · <a href="https://github.com/daum0809/gangsa-hours/tree/main/boss-ai">소스와 실행 안내</a></footer></main></body></html>
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="사장 문제분해 AI PoC — 답보다 질문을 먼저 하는 무료 ChatGPT 실험">
+<title>사장 문제분해 AI PoC</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f6f5f0;color:#203334;font:17px/1.8 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+nav{max-width:1080px;margin:auto;padding:18px 24px;display:flex;justify-content:space-between;gap:16px;align-items:center}
+a{color:#155d58}header{background:#153f40;color:#f9f7f0;padding:72px 24px}header>div,main{max-width:960px;margin:auto}
+.eyebrow{color:#efbf67;font-weight:700;font-size:13px;letter-spacing:.12em}h1{font-size:clamp(38px,6vw,64px);line-height:1.15;letter-spacing:-.05em;margin:.4em 0}
+header p{max-width:710px;color:#d6e2de;font-size:19px}.cta{display:inline-block;background:#efbf67;color:#183b3c;text-decoration:none;padding:13px 20px;border-radius:10px;font-weight:800;margin-right:8px;margin-top:10px}
+.cta.secondary{background:#f9f7f0}.note{background:#fff6dc;border-left:4px solid #c99638;padding:18px 20px;margin:28px 0;border-radius:8px}
+main{padding:34px 24px 84px}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:28px 0}.card{background:white;border:1px solid #dce3df;padding:22px;border-radius:14px}
+.card strong{display:block;font-size:22px;margin-bottom:6px}.tag{font-size:12px;letter-spacing:.1em;color:#72817e;font-weight:800}
+h2{font-size:30px;letter-spacing:-.035em;margin-top:54px}h3{font-size:21px}ol,ul{padding-left:24px}.case{background:#fff;border:1px solid #dde3df;border-radius:12px;padding:18px;margin:12px 0}
+pre{white-space:pre-wrap;background:#132f30;color:#f5f3eb;padding:18px;border-radius:12px;overflow:auto;font-size:14px;line-height:1.65}
+button{border:0;background:#efbf67;color:#173839;font-weight:800;padding:12px 16px;border-radius:9px;cursor:pointer}
+table{border-collapse:collapse;width:100%;font-size:15px}th,td{border-bottom:1px solid #d3dbd6;padding:12px 10px;text-align:left;vertical-align:top}th{background:#e7ece8}
+footer{margin-top:60px;padding-top:24px;border-top:1px solid #ccd4cf;font-size:14px}
+@media(max-width:700px){.grid{grid-template-columns:1fr}header{padding-top:46px}nav{align-items:flex-start;flex-direction:column}}
+</style>
+</head>
+<body>
+<nav><strong>사장 문제분해 AI</strong><div><a href="free-poc/README.md">README</a> · <a href="free-poc/prompt.md">프롬프트</a> · <a href="free-poc/real_cases.md">실제 사례</a></div></nav>
+
+<header><div>
+<span class="eyebrow">MAIN QUEST 2 · AI POC</span>
+<h1>사장의 막연한 고민을<br>30분 행동 하나로.</h1>
+<p>해결책을 바로 던지는 AI가 아니라, 먼저 문제를 구조화하고 원인 가설을 좁히는 질문형 PoC입니다. 별도 API나 서버 없이 각자의 ChatGPT에서 실행할 수 있습니다.</p>
+<a class="cta" href="free-poc/prompt.md">실행 프롬프트 열기</a>
+<a class="cta secondary" href="https://github.com/daum0809/gangsa-hours/tree/main/boss-ai/free-poc">GitHub 자료 보기</a>
+</div></header>
+
+<main>
+<div class="note"><strong>현재 버전의 핵심:</strong> 별도 API 키 없이 각자의 ChatGPT에서 동일한 프롬프트를 실행하고, 일반 ChatGPT 답변과 비교해 개선 효과를 검증합니다.</div>
+
+<div class="grid">
+<div class="card"><span class="tag">STEP 1</span><strong>문제 재정의</strong>현상과 해석을 분리해 확인 가능한 문제 문장으로 바꿉니다.</div>
+<div class="card"><span class="tag">STEP 2</span><strong>원인 질문</strong>가설을 2~4개로 나누고 최대 3개의 질문으로 좁힙니다.</div>
+<div class="card"><span class="tag">STEP 3</span><strong>30분 행동</strong>지금 확인해야 할 데이터와 오늘 할 단일 행동 하나를 정합니다.</div>
+</div>
+
+<h2>왜 이 PoC를 만들었나</h2>
+<p>사장은 “매출이 줄었다”, “강사를 못 구하겠다”, “광고비가 부담된다”처럼 모호한 형태로 문제를 경험합니다. 이때 해결책을 바로 고르면 원인을 잘못 짚을 수 있습니다. 이번 PoC는 <strong>답보다 질문을 먼저 한다</strong>는 원칙으로, 막연한 고민을 검증 가능한 문제로 바꾸는 데 초점을 둡니다.</p>
+
+<h2>실제 학원 운영 사례 5건</h2>
+<div class="case"><strong>1. 강사 구하기</strong><br>좋은 강사를 구하기 어렵고 채용에 시간과 에너지가 많이 든다.</div>
+<div class="case"><strong>2. 광고비 부담</strong><br>광고를 줄이면 신규 문의가 걱정되고, 유지하자니 비용 부담이 크다.</div>
+<div class="case"><strong>3. 상담시간 과부하</strong><br>학부모 상담이 원장에게 몰려 수업·기획·운영 시간이 부족하다.</div>
+<div class="case"><strong>4. 학생 수 감소</strong><br>신규 유입 감소인지 기존 학생 퇴원 증가인지 원인을 모르겠다.</div>
+<div class="case"><strong>5. 업무의 원장 집중</strong><br>상담, 강사관리, 학부모 대응, 의사결정이 원장 한 사람에게 집중되어 있다.</div>
+
+<h2>어떻게 실험하나</h2>
+<table>
+<thead><tr><th>조건</th><th>실행 방식</th></tr></thead>
+<tbody>
+<tr><td>A. 일반 ChatGPT</td><td>같은 고민을 평소처럼 질문</td></tr>
+<tr><td>B. 문제분해 AI</td><td>제작한 프롬프트를 먼저 넣고 같은 고민을 입력한 뒤 추가 질문에 답변</td></tr>
+</tbody>
+</table>
+<p>두 결과를 문제 구체성, 실행 가능성, 근거 없는 조언 감소, 질문의 유용성으로 각각 1~5점 평가합니다. 5건 이상 비교해 4개 항목 중 3개 이상에서 평균 1점 이상 개선되면 1차 가설을 지지한 것으로 판단합니다.</p>
+
+<h2>핵심 프롬프트</h2>
+<pre id="prompt">당신은 소상공인·학원장·1인 경영자의 문제를 바로 해결해주는 조언 AI가 아니라,
+문제를 먼저 정확하게 구조화하는 AI 코치다.
+
+원칙:
+1. 답보다 질문을 먼저 한다.
+2. 사실과 해석을 구분한다.
+3. 원인을 단정하지 말고 가설로 표현한다.
+4. 질문은 최대 3개까지만 한다.
+5. 마지막에는 오늘 30분 안에 할 수 있는 행동 하나만 제시한다.
+
+진행:
+문제 재정의 → 원인 가설 2~4개 → 확인 질문 최대 3개 → 사용자 답변 →
+핵심 문제 가설 → 현재 근거 → 아직 모르는 것 → 확인할 데이터 → 오늘 30분 행동 1개</pre>
+<button onclick="navigator.clipboard.writeText(document.getElementById('prompt').innerText)">프롬프트 복사</button>
+
+<h2>과제 제출 자료</h2>
+<ul>
+<li><a href="free-poc/problem_definition.md">문제 정의서</a></li>
+<li><a href="free-poc/prompt.md">실행 프롬프트</a></li>
+<li><a href="free-poc/experiment.md">비교 실험 방법</a></li>
+<li><a href="free-poc/evaluation.csv">평가표 CSV</a></li>
+<li><a href="free-poc/failure_case.md">실패 사례 기록 양식</a></li>
+<li><a href="free-poc/real_cases.md">실제 학원 운영 사례 5건</a></li>
+</ul>
+
+<h2>한계와 다음 단계</h2>
+<p>현재 버전은 사용자가 제공한 정보에만 의존하므로 실제 원인을 확정하지 않습니다. 또한 모델 버전과 계정 환경에 따라 출력이 달라질 수 있습니다. 다음 단계는 실제 사장 5~10명 테스트, 업종별 질문 분기, 그리고 검증된 질문 로직의 웹앱 제품화입니다.</p>
+
+<footer>사장 문제분해 AI PoC · 2026 · <a href="https://github.com/daum0809/gangsa-hours/tree/main/boss-ai/free-poc">GitHub 저장소 자료</a></footer>
+</main>
+</body>
+</html>
